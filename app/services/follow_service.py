@@ -28,3 +28,27 @@ def accept_follow_request(user_id, request_user_id):
     db.session.commit()
 
     return {'message': 'Follow request accepted', 'status': 200}
+
+def delete_follow_request(user_id, request_user_id):
+    follow_request = Follow.query.filter_by(follower_id=request_user_id, followed_id=user_id).first()
+    if not follow_request:
+        return {'message': 'Follow request not found', 'status': 404}
+
+    db.session.delete(follow_request)
+    db.session.commit()
+
+    return {'message': 'Follow request deleted', 'status': 200}
+
+def get_user_followers(user_id):
+    user = User.query.get(user_id)
+    if not user:
+        return {'message': 'User not found', 'status': 404}
+
+    followers = Follow.query.filter_by(followed_id=user_id, accepted=True).all()
+    return {
+        'followers': [{
+            'id': follower.follower_id,
+            'username': follower.follower.username
+        } for follower in followers],
+        'status': 200
+    }
