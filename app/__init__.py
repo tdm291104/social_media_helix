@@ -11,10 +11,11 @@ db = SQLAlchemy()
 socketio = SocketIO()
 migrate = Migrate()
 
+
 def create_app():
     print('Creating app...')
     app = Flask(__name__)
-    
+
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/helix_db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
@@ -38,7 +39,7 @@ def create_app():
             print(f"Database connect fail: {str(e)}")
 
     JWTManager(app)
-    from .controllers.media_controller import media_bp 
+    from .controllers.media_controller import media_bp
     from .controllers.auth_controller import auth_bp
     from .controllers.user_controller import user_bp
     from .controllers.post_controller import post_bp
