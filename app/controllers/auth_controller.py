@@ -21,6 +21,6 @@ def register():
 
 @auth_bp.route('/login', methods=['POST'])
 def login():
-    data = request.json
+    data = request.get_json()
     result = login_user(data)
     return jsonify(result)
