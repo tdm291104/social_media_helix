@@ -6,6 +6,7 @@ from flask_jwt_extended import JWTManager
 from sqlalchemy import inspect
 from sqlalchemy.exc import OperationalError
 from flask_socketio import SocketIO
+from flask_cors import CORS
 
 db = SQLAlchemy()
 socketio = SocketIO()
@@ -21,6 +22,8 @@ def create_app():
     db.init_app(app)
 
     app.config.from_object(Config)
+
+    CORS(app)
 
     socketio.init_app(app)
 
