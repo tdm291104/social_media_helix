@@ -35,7 +35,6 @@ def login_user(data):
     user = User.query.filter_by(username=username).first()
     if user and check_password_hash(user.password_hash, password):
         access_token = create_access_token(identity=user.id)
-<<<<<<< HEAD
         role = user.is_admin
         return {'access_token': access_token, 'message': 'Login successful', 'status': 200, 'role': role}
 
@@ -50,8 +49,5 @@ def get_account(id):
     if user:
         role = user.is_admin
         return {'role': role, 'message': 'get account successful', 'status': 200}
-=======
-        return {'access_token': access_token, 'message': 'Login successful', 'status': 200}
->>>>>>> 74223eab02ddd8e5f6dc053b5f48d7022a93e0a9
 
     return {'message': 'Invalid credentials', 'status': 401}
