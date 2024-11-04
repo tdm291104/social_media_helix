@@ -4,6 +4,7 @@ from app.schemas import UserRegisterSchema
 
 auth_bp = Blueprint('auth', __name__)
 
+
 @auth_bp.route('/register', methods=['POST'])
 def register():
     schema = UserRegisterSchema()
@@ -14,8 +15,9 @@ def register():
     result = register_user(data)
     return jsonify(result)
 
+
 @auth_bp.route('/login', methods=['POST'])
 def login():
-    data = request.json
+    data = request.get_json()
     result = login_user(data)
     return jsonify(result)
