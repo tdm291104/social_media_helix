@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
-from app.services.post_service import create_post, delete_post, get_post, get_all_posts, get_user_posts, update_post
+from app.services.post_service import create_post, delete_post, get_post, get_all_posts, get_user_posts, update_post, delete_post_by_admin
 from werkzeug.utils import secure_filename
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import get_jwt_identity, jwt_required
 import os
 
 post_bp = Blueprint('post', __name__)
@@ -34,7 +34,18 @@ def create():
 @post_bp.route('/<int:post_id>', methods=['DELETE'])
 @jwt_required()
 def delete(post_id):
-    result = delete_post(post_id)
+    user_id = get_jwt_identity()
+    result = delete_post(user_id, post_id)
+    return jsonify(result)
+
+#Delete post by post_id if you are admin
+@post_bp.route('/delete/<int:post_id>', methods=['DELETE'])
+@jwt_required()
+def delete_admin(post_id):
+    user_id = get_jwt_identity()
+    if user_id != 1:
+        return jsonify({'message': 'You are not admin', 'status': 403})
+    result = delete_post_by_admin(post_id)
     return jsonify(result)
 
 @post_bp.route('/<int:post_id>', methods=['GET'])
@@ -50,7 +61,6 @@ def update(post_id):
     return jsonify(result)
 
 @post_bp.route('/user/<int:user_id>', methods=['GET'])
-@jwt_required()
 def get_user_posts_route(user_id):
     result = get_user_posts(user_id)
     return jsonify(result)

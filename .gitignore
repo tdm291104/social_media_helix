@@ -1,1 +1,3 @@
 app/media/
+__pycache__/
+*.pyc

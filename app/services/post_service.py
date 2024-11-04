@@ -17,7 +17,19 @@ def create_post(data):
 
     return {'message': 'Post created successfully', 'status': 201}
 
-def delete_post(post_id):
+def delete_post(user_id, post_id):
+    post = Post.query.get(post_id)
+    if not post:
+        return {'message': 'Post not found', 'status': 404}
+    if post.user_id != user_id:
+        return {'message': 'Permission denied', 'status': 403}
+
+    db.session.delete(post)
+    db.session.commit()
+
+    return {'message': 'Post deleted successfully', 'status': 200}
+
+def delete_post_by_admin(post_id):
     post = Post.query.get(post_id)
     if not post:
         return {'message': 'Post not found', 'status': 404}

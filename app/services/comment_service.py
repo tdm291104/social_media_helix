@@ -1,8 +1,7 @@
 from app.models import db, User, Post, Comment
 from datetime import datetime
 
-def create_comment(data):
-    user_id = data.get('user_id')
+def create_comment(user_id, data):
     post_id = data.get('post_id')
     content = data.get('content')
 
@@ -20,11 +19,23 @@ def create_comment(data):
 
     return {'message': 'Comment created successfully', 'status': 201}
 
-def delete_comment(comment_id):
+def delete_comment(user_id, comment_id):
     comment = Comment.query.get(comment_id)
     if not comment:
         return {'message': 'Comment not found', 'status': 404}
+    if comment.user_id != user_id:
+        return {'message': 'Permission denied', 'status': 403}
+    
+    db.session.delete(comment)
+    db.session.commit()
 
+    return {'message': 'Comment deleted successfully', 'status': 200}
+
+def delete_comment_by_admin(comment_id):
+    comment = Comment.query.get(comment_id)
+    if not comment:
+        return {'message': 'Comment not found', 'status': 404}
+    
     db.session.delete(comment)
     db.session.commit()
 
@@ -71,12 +82,14 @@ def get_comment(comment_id):
         'created_at': comment.created_at
     }
 
-def update_comment(comment_id, data):
+def update_comment(user_id, comment_id, data):
     comment = Comment.query.get(comment_id)
     if not comment:
         return {'message': 'Comment not found', 'status': 404}
-
-    comment.content = data.get('content', comment.content)
+    if comment.user_id != user_id:
+        return {'message': 'Permission denied', 'status': 403}
+    
+    comment.content = data.get('content')
     db.session.commit()
 
     return {'message': 'Comment updated successfully', 'status': 200}
