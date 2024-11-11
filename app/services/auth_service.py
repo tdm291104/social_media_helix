@@ -35,6 +35,19 @@ def login_user(data):
     user = User.query.filter_by(username=username).first()
     if user and check_password_hash(user.password_hash, password):
         access_token = create_access_token(identity=user.id)
-        return {'access_token': access_token, 'message': 'Login successful', 'status': 200}
+        role = user.is_admin
+        return {'access_token': access_token, 'message': 'Login successful', 'status': 200, 'role': role}
+
+    return {'message': 'Invalid credentials', 'status': 401}
+
+
+def get_account(id):
+    from app.models import User
+
+    # Kiểm tra người dùng tồn tại và xác nhận mật khẩu
+    user = User.query.filter_by(id=id).first()
+    if user:
+        role = user.is_admin
+        return {'role': role, 'message': 'get account successful', 'status': 200}
 
     return {'message': 'Invalid credentials', 'status': 401}
