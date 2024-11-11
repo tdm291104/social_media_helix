@@ -23,10 +23,6 @@ def create_app():
     db.init_app(app)
 
     app.config.from_object(Config)
-
-<<<<<<< HEAD
-    CORS(app)
-=======
     CORS(app, resources={
         r"/api/*": {
             "origins": ["http://localhost:3000"],
@@ -35,7 +31,6 @@ def create_app():
             "supports_credentials": True
         }
     })
->>>>>>> main
 
     socketio.init_app(app)
 
