@@ -6,7 +6,8 @@ from app.services.user_service import (
     update_user_profile,
     delete_user,
     search_user,
-    get_user_by_username
+    get_user_by_username,
+    get_all_users
 )
 from werkzeug.utils import secure_filename
 import os
@@ -94,6 +95,9 @@ def delete_user_by_admin(user_id):
 @user_bp.route('/search', methods=['GET'])
 def search():
     username = request.args.get('username')  # Get username from query string
+    if not username:
+        result = get_all_users()
+        return jsonify(result), result.get('status', 400)
     result = search_user(username)
     return jsonify(result), result.get('status', 400)
 

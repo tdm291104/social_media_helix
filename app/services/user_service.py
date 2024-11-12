@@ -75,3 +75,13 @@ def get_user_by_username(username):
         'user': user.to_dict(),
         'status': 200
     }
+
+def get_all_users():
+    users = User.query.all()
+    if not users:
+        return {'message': 'No user found', 'status': 404}
+    
+    return {
+        'users': [user.to_dict() for user in users],
+        'status': 200
+    }
