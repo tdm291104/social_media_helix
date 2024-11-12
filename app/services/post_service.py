@@ -3,8 +3,7 @@ from app import db
 from datetime import datetime
 
 
-def create_post(data):
-    user_id = data.get('user_id')
+def create_post(data, user_id):
     content = data.get('content')
     media_url = data.get('media_url')
 
