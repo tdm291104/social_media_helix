@@ -1,6 +1,7 @@
 from app.models import Like, Post
 from app import db
 
+
 def like_post(user_id, post_id):
     if not Post.query.filter_by(id=post_id).first():
         return {'message': 'Post not found', 'status': 404}
@@ -14,6 +15,7 @@ def like_post(user_id, post_id):
 
     return {'message': 'Post liked successfully', 'status': 201}
 
+
 def unlike_post(user_id, post_id):
     if not Post.query.filter_by(id=post_id).first():
         return {'message': 'Post not found', 'status': 404}
@@ -26,14 +28,16 @@ def unlike_post(user_id, post_id):
 
     return {'message': 'Post unliked successfully', 'status': 200}
 
-def get_post_likes(post_id):
+
+def get_post_likes(post_id, user_id):
     if not Post.query.filter_by(id=post_id).first():
         return {'message': 'Post not found', 'status': 404}
-    likes = Like.query.filter_by(post_id=post_id).all()
+    likes = Like.query.filter_by(post_id=post_id, user_id=user_id).first()
+    if likes:
+        return {
+            'post_id': likes.post_id,
+            'status': 200
+        }
     return {
-        'likes': [{
-            'id': like.user_id,
-            'username': like.user.username
-        } for like in likes],
-        'status': 200
-   }
+        'status': 400
+    }
