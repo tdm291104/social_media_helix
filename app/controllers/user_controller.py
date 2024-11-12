@@ -83,8 +83,8 @@ def delete():
 @user_bp.route('/delete/<int:user_id>', methods=['DELETE'])
 @jwt_required()
 def delete_user_by_admin(user_id):
-    user_id = get_jwt_identity()
-    if user_id != 1:
+    user_id_admin = get_jwt_identity()
+    if user_id_admin != 1:
         return jsonify({'message': 'Permission denied', 'status': 403}), 403
     result = delete_user(user_id)
     return jsonify(result), result.get('status', 400)
