@@ -5,3 +5,6 @@ app/contronller/__pycache__/
 app/contronller/*.pyc
 app/service/__pycache__/
 app/service/*.pyc
+
+
+
