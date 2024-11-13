@@ -41,3 +41,17 @@ def get_post_likes(post_id, user_id):
     return {
         'status': 400
     }
+
+
+def get_user_likes(user_id):
+    likes = Like.query.filter_by(user_id=user_id).all()
+    if likes:
+        return {
+            'posts': [{
+                'id': like.post_id,
+            } for like in likes],
+            'status': 200
+        }
+    return {
+        'status': 400
+    }
