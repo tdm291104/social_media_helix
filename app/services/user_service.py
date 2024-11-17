@@ -7,6 +7,7 @@ def get_user_profile(user_id):
         return {'message': 'User not found', 'status': 404}
     
     return {
+        'id': user.id,
         'username': user.username,
         'email': user.email,
         'is_admin': user.is_admin,

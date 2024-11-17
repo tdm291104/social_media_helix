@@ -52,6 +52,7 @@ def get_post_comments(post_id):
         return {'message': 'Post not found', 'status': 404}
 
     comments = Comment.query.filter_by(post_id=post_id).all()
+    comments = sorted(comments, key=lambda x: x.id, reverse=True)
     return {
         'comments': [{
             'id': comment.id,

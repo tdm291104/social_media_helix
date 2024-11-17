@@ -62,6 +62,7 @@ def get_user_posts(user_id):
 
 def get_all_posts():
     posts = Post.query.all()
+    posts = sorted(posts, key=lambda x: x.id, reverse=True)
     return {
         'posts': [{
             'id': post.id,
