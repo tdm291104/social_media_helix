@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.services.follow_service import follow_user, accept_follow_request, delete_follow_request, get_user_followers
+from app.services.follow_service import follow_user, accept_follow_request, delete_follow_request, get_user_followers, get_post_followed
 
 
 follow_bp = Blueprint('follow', __name__)
@@ -30,4 +30,12 @@ def delete_follow_request(request_user_id):
 @follow_bp.route('/followers/<int:user_id>', methods=['GET'])
 def get_followers(user_id):
     result = get_user_followers(user_id)
+    return jsonify(result), result.get('status', 400)
+
+@follow_bp.route('/', methods=['GET'])
+@jwt_required()
+def get_followed():
+    user_id = get_jwt_identity()
+    result = get_post_followed(user_id)
+    print(result)
     return jsonify(result), result.get('status', 400)

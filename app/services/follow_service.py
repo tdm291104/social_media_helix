@@ -20,6 +20,7 @@ def follow_user(user_id, target_user_id):
     return {'message': 'Follow request sent', 'status': 201}
 
 def accept_follow_request(user_id, request_user_id):
+    print(user_id, request_user_id)
     follow_request = Follow.query.filter_by(follower_id=request_user_id, followed_id=user_id).first()
     if not follow_request:
         return {'message': 'Follow request not found', 'status': 404}
@@ -48,7 +49,22 @@ def get_user_followers(user_id):
     return {
         'followers': [{
             'id': follower.follower_id,
-            'username': follower.follower.username
+            'username': follower.follower.username,
+            'media_url': follower.follower.media_url
+        } for follower in followers],
+        'status': 200
+    }
+
+def get_post_followed(user_id):
+    user = User.query.get(user_id)
+    if not user:
+        return {'message': 'User not found', 'status': 404}
+    followers = Follow.query.filter_by(followed_id=user_id, accepted=False).all()
+    return {
+        'followers': [{
+            'id': follower.follower_id,
+            'username': follower.follower.username,
+            'media_url': follower.follower.media_url
         } for follower in followers],
         'status': 200
     }

@@ -3,6 +3,7 @@ from app.services.post_service import create_post, delete_post, get_post, get_al
 from werkzeug.utils import secure_filename
 from flask_jwt_extended import get_jwt_identity, jwt_required
 import os
+# from app.model_toxic_bert import toxic_pipeline
 
 post_bp = Blueprint('post', __name__)
 
@@ -18,7 +19,12 @@ def allowed_file(filename):
 def create():
     user_id = get_jwt_identity()
     data = request.form.to_dict()
-    print(request)
+
+    text = data.get('content')
+    # if text:
+    #     toxic_result = toxic_pipeline(text)
+    #     if toxic_result[0]['label'] == 'toxic':
+    #         return jsonify({'message': 'Your post is toxic', 'status': 400}), 400
 
     media_url = None
     if 'file' in request.files:
