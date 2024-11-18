@@ -54,7 +54,9 @@ def get_user_posts(user_id):
             'id': post.id,
             'content': post.content,
             'media_url': post.media_url,
-            'created_at': post.created_at
+            'created_at': post.created_at,
+            'author': post.author.username,
+            'avatar': post.author.media_url
         } for post in posts],
         'status': 200
     }
