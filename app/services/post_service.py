@@ -1,4 +1,4 @@
-from app.models import Post, User
+from app.models import Post, User, Comment
 from app import db
 from datetime import datetime
 
@@ -36,6 +36,9 @@ def delete_post_by_admin(post_id):
     post = Post.query.get(post_id)
     if not post:
         return {'message': 'Post not found', 'status': 404}
+
+    # Xóa tất cả các comments liên quan trước
+    Comment.query.filter_by(post_id=post_id).delete()
 
     db.session.delete(post)
     db.session.commit()
