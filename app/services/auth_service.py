@@ -32,7 +32,7 @@ def login_user(data):
     password = data.get('password')
 
     # Kiểm tra người dùng tồn tại và xác nhận mật khẩu
-    user = User.query.filter_by(username=username).first()
+    user = User.query.filter_by(username=username, is_lock=False).first()
     if user and check_password_hash(user.password_hash, password):
         access_token = create_access_token(identity=user.id)
         role = user.is_admin

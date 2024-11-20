@@ -13,6 +13,7 @@ class User(db.Model):
     media_url = db.Column(db.String(255))
     address = db.Column(db.String(255))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    is_lock = db.Column(db.Boolean, default=False)
     posts = db.relationship('Post', backref='author', lazy=True)
     comments = db.relationship('Comment', backref='author', lazy=True)
     followers = db.relationship('Follow', foreign_keys='Follow.followed_id', backref='followed', lazy='dynamic')
@@ -29,6 +30,7 @@ class User(db.Model):
             'media_url': self.media_url,
             'address': self.address,
             'created_at': self.created_at.isoformat(),
+            'is_lock': self.is_lock
         }
 
 class Post(db.Model):

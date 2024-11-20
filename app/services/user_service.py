@@ -52,7 +52,7 @@ def delete_user(user_id):
     user = User.query.get(user_id)
     if not user:
         return {'message': 'User not found', 'status': 404}
-    db.session.delete(user)
+    user.is_lock = True
     db.session.commit()
 
     return {'message': 'User deleted successfully', 'status': 200}
@@ -95,7 +95,7 @@ def delete_user_for_admin(user_id, admin_id):
     user = User.query.get(user_id)
     if not user:
         return {'message': 'User not found', 'status': 404}
-    db.session.delete(user)
+    user.is_lock = True
     db.session.commit()
 
     return {'message': 'User deleted successfully', 'status': 200}
