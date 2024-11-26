@@ -60,11 +60,7 @@ def get_comment_toxic():
             'id': comment.id,
             'content': comment.content,
             'created_at': comment.created_at,
-            'user': {
-                'id': comment.author.id,
-                'username': comment.author.username,
-                'avt': comment.author.media_url
-            },
+            'author': comment.author.username,
             'toxic': comment.toxic
         } for comment in comments],
         'status': 200
