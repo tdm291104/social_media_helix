@@ -1,5 +1,6 @@
 from app.models import db, User, Post, Comment
 from datetime import datetime
+from app.model_toxic_bert import toxic_pipeline
 
 
 def create_comment(user_id, data):
@@ -44,6 +45,30 @@ def delete_comment_by_admin(comment_id):
     db.session.commit()
 
     return {'message': 'Comment deleted successfully', 'status': 200}
+
+def get_comment_toxic():
+    comments = Comment.query.all()
+    comments = sorted(comments, key=lambda x: x.id, reverse=True)
+    for comment in comments:
+        rs = toxic_pipeline(comment.content)[0]
+        if rs['score'] > 0.4:
+            comment.toxic = True
+        else:
+            comment.toxic = False
+    return {
+        'comments': [{
+            'id': comment.id,
+            'content': comment.content,
+            'created_at': comment.created_at,
+            'user': {
+                'id': comment.author.id,
+                'username': comment.author.username,
+                'avt': comment.author.media_url
+            },
+            'toxic': comment.toxic
+        } for comment in comments],
+        'status': 200
+    }
 
 
 def get_post_comments(post_id):

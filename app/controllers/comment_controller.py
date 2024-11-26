@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.services.comment_service import create_comment, delete_comment, get_comment, get_post_comments, update_comment, get_user_comments, delete_comment_by_admin
+from app.services.comment_service import create_comment, delete_comment, get_comment, get_post_comments, update_comment, get_user_comments, delete_comment_by_admin, get_comment_toxic
 
 comment_bp = Blueprint('comment', __name__)
 
@@ -50,4 +50,9 @@ def update(comment_id):
 @comment_bp.route('/user/<int:user_id>', methods=['GET'])
 def get_user_comments_route(user_id):
     result = get_user_comments(user_id)
+    return jsonify(result)
+
+@comment_bp.route('/toxic', methods=['GET'])
+def get_toxic():
+    result = get_comment_toxic()
     return jsonify(result)
