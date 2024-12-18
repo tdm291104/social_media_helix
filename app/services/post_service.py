@@ -52,6 +52,7 @@ def get_user_posts(user_id):
         return {'message': 'User not found', 'status': 404}
 
     posts = Post.query.filter_by(user_id=user_id).all()
+    posts = sorted(posts, key=lambda x: x.id, reverse=True)
     return {
         'posts': [{
             'id': post.id,
