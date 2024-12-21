@@ -25,6 +25,9 @@ def delete_post(user_id, post_id):
         return {'message': 'Post not found', 'status': 404}
     if post.user_id != user_id:
         return {'message': 'Permission denied', 'status': 403}
+    
+    # Xóa tất cả các comments liên quan trước
+    Comment.query.filter_by(post_id=post_id).delete()
 
     db.session.delete(post)
     db.session.commit()
@@ -112,7 +115,7 @@ def update_post(post_id, data):
         return {'message': 'Post not found', 'status': 404}
 
     post.content = data.get('content', post.content)
-    post.media_url = data.get('media_url', post.media_url)
+    # post.media_url = data.get('media_url', post.media_url)
     db.session.commit()
 
     return {'message': 'Post updated successfully', 'status': 200}
