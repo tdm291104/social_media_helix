@@ -122,5 +122,6 @@ def update_post(post_id, data):
 
 
 def up():
+    print('2')
     print('1')
     print('2')
