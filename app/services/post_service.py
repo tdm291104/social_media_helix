@@ -122,4 +122,4 @@ def update_post(post_id, data):
 
 
 def up():
-    pass
+    print('1')
