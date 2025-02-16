@@ -123,3 +123,4 @@ def update_post(post_id, data):
 
 def up():
     print('1')
+    print('2')
