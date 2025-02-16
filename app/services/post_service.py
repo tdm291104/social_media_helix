@@ -119,3 +119,7 @@ def update_post(post_id, data):
     db.session.commit()
 
     return {'message': 'Post updated successfully', 'status': 200}
+
+
+def up():
+    pass
